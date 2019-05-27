@@ -403,6 +403,30 @@ Future<void> main() async {
       expect(response.results.first.vicinity,
           equals('Pyrmont Bay Wharf Darling Dr, Sydney'));
     });
+
+    group('toJson methods', () {
+      test('when status is ZERO_RESULTS', () {
+        final Map<String, dynamic> fromJson = {
+          'html_attributions': [],
+          'results': [],
+          'status': 'ZERO_RESULTS'
+        };
+
+        final response = PlacesSearchResponse.fromJson(fromJson);
+        final toJson = response.toJson();
+
+        expect(fromJson, equals(toJson));
+      });
+
+      test('with results', () {
+        final fromJson = json.decode(_responseExample);
+
+        final response = PlacesSearchResponse.fromJson(fromJson);
+        final toJson = response.toJson();
+
+        expect(fromJson, equals(toJson));
+      });
+    });
   });
 }
 
@@ -441,7 +465,8 @@ final _responseExample = '''
          ],
          "reference" : "CoQBdQAAAFSiijw5-cAV68xdf2O18pKIZ0seJh03u9h9wk_lEdG-cP1dWvp_QGS4SNCBMk_fB06YRsfMrNkINtPez22p5lRIlj5ty_HmcNwcl6GZXbD2RdXsVfLYlQwnZQcnu7ihkjZp_2gk1-fWXql3GQ8-1BEGwgCxG-eaSnIJIBPuIpihEhAY1WYdxPvOWsPnb2-nGb6QGhTipN0lgaLpQTnkcMeAIEvCsSa0Ww",
          "types" : [ "travel_agency", "restaurant", "food", "establishment" ],
-         "vicinity" : "Pyrmont Bay Wharf Darling Dr, Sydney"
+         "vicinity" : "Pyrmont Bay Wharf Darling Dr, Sydney",
+         "price_level": 1
       },
       {
          "geometry" : {

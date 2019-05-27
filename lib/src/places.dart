@@ -395,6 +395,18 @@ class PlacesSearchResponse extends GoogleResponseList<PlacesSearchResult> {
           (json['html_attributions'] as List).cast<String>(),
           json['next_page_token'])
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'status': status,
+      'results': results.map((item) => item.toJson()),
+      'html_attributions': htmlAttributions,
+      'error_message': errorMessage,
+      'next_page_token': nextPageToken
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class PlacesSearchResult {
@@ -480,6 +492,31 @@ class PlacesSearchResult {
           json['id'],
           json['reference'])
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'icon': icon,
+      'geometry': geometry?.toJson(),
+      'name': name,
+      'opening_hours': openingHours?.toJson(),
+      'photos': photos?.map((photo) => photo.toJson()),
+      'place_id': placeId,
+      'scope': scope,
+      'alt_ids': altIds?.map((id) => id.toJson()),
+      'price_level': PriceLevel.values.contains(priceLevel)
+          ? PriceLevel.values.indexOf(priceLevel)
+          : null,
+      'rating': rating,
+      'types': types,
+      'vicinity': vicinity,
+      'formatted_address': formattedAddress,
+      'permanently_closed': permanentlyClosed,
+      'id': id,
+      'reference': reference
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class PlaceDetails {
@@ -601,6 +638,37 @@ class PlaceDetails {
               ?.cast<Review>(),
           Geometry.fromJson(json['geometry']))
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'address_components': addressComponents.map((el) => el.toJson()),
+      'adr_address': adrAddress,
+      'formatted_address': formattedAddress,
+      'formatted_phone_number': formattedPhoneNumber,
+      'id': id,
+      'reference': reference,
+      'icon': icon,
+      'name': name,
+      'opening_hours': openingHours?.toJson(),
+      'photos': photos.map((photo) => photo.toJson()),
+      'place_id': placeId,
+      'international_phone_number': internationalPhoneNumber,
+      'price_level': PriceLevel.values.contains(priceLevel)
+          ? PriceLevel.values.indexOf(priceLevel)
+          : null,
+      'rating': rating,
+      'scope': scope,
+      'types': types,
+      'url': url,
+      'vicinity': vicinity,
+      'utc_offset': utcOffset,
+      'website': website,
+      'reviews': reviews.map((review) => review.toJson()),
+      'geometry': geometry?.toJson()
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class OpeningHours {
@@ -611,6 +679,10 @@ class OpeningHours {
 
   factory OpeningHours.fromJson(Map json) =>
       json != null ? OpeningHours(json['open_now']) : null;
+
+  Map<String, dynamic> toJson() => {
+    'open_now': openNow
+  };
 }
 
 class OpeningHoursDetail extends OpeningHours {
@@ -632,6 +704,16 @@ class OpeningHoursDetail extends OpeningHours {
               ?.cast<OpeningHoursPeriod>(),
           (json['weekday_text'] as List)?.cast<String>())
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'open_now': openNow,
+      'periods': periods.map((period) => period.toJson()),
+      'weekday_text': weekdayText
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class OpeningHoursPeriodDate extends GoogleDateTime {
@@ -647,6 +729,15 @@ class OpeningHoursPeriodDate extends GoogleDateTime {
 
   factory OpeningHoursPeriodDate.fromJson(Map json) =>
       json != null ? OpeningHoursPeriodDate(json['day'], json['time']) : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'day': day,
+      'time': time
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class OpeningHoursPeriod extends GoogleDateTime {
@@ -659,6 +750,15 @@ class OpeningHoursPeriod extends GoogleDateTime {
       ? OpeningHoursPeriod(OpeningHoursPeriodDate.fromJson(json['open']),
           OpeningHoursPeriodDate.fromJson(json['close']))
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'open': open?.toJson(),
+      'close': close?.toJson()
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class Photo {
@@ -681,6 +781,13 @@ class Photo {
       ? Photo(json['photo_reference'], json['height'], json['width'],
           (json['html_attributions'] as List)?.cast<String>())
       : null;
+
+  Map<String, dynamic> toJson() => {
+    'photo_reference': photoReference,
+    'height': height,
+    'width': width,
+    'html_attributions': htmlAttributions
+  };
 }
 
 class AlternativeId {
@@ -693,6 +800,11 @@ class AlternativeId {
 
   factory AlternativeId.fromJson(Map json) =>
       json != null ? AlternativeId(json['place_id'], json['scope']) : null;
+
+  Map<String, dynamic> toJson() => {
+    'place_id': placeId,
+    'scope': scope
+  };
 }
 
 enum PriceLevel { free, inexpensive, moderate, expensive, veryExpensive }
@@ -719,6 +831,17 @@ class PlacesDetailsResponse extends GoogleResponse<PlaceDetails> {
           PlaceDetails.fromJson(json['result']),
           (json['html_attributions'] as List)?.cast<String>())
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'status': status,
+      'error_message': errorMessage,
+      'result': result?.toJson(),
+      'html_attributions': htmlAttributions
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class Review {
@@ -764,6 +887,21 @@ class Review {
           json['text'],
           json['time'])
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'author_name': authorName,
+      'author_url': authorUrl,
+      'language': language,
+      'profile_photo_url': profilePhotoUrl,
+      'rating': rating,
+      'relative_time_description': relativeTimeDescription,
+      'text': text,
+      'time': time
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class PlacesAutocompleteResponse extends GoogleResponseStatus {
@@ -787,6 +925,16 @@ class PlacesAutocompleteResponse extends GoogleResponseStatus {
               .toList()
               .cast<Prediction>())
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'status': status,
+      'error_message': errorMessage,
+      'predictions': predictions.map((prediction) => prediction.toJson())
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class Prediction {
@@ -829,6 +977,21 @@ class Prediction {
           StructuredFormatting.fromJson(json['structured_formatting']),
         )
       : null;
+
+   Map<String, dynamic> toJson() {
+     Map<String, dynamic> json = {
+       'description': description,
+       'id': id,
+       'terms': terms,
+       'place_id': placeId,
+       'reference': reference,
+       'types': types,
+       'matched_substrings': matchedSubstrings.map((item) => item.toJson()),
+       'structured_formatting': structuredFormatting?.toJson()
+     };
+
+     return Map.from(json)..removeWhere((k, v) => v == null);
+   }
 }
 
 class Term {
@@ -839,6 +1002,15 @@ class Term {
 
   factory Term.fromJson(Map json) =>
       json != null ? Term(json['offset'], json['value']) : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'offset': offset,
+      'value': value
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class MatchedSubstring {
@@ -849,6 +1021,15 @@ class MatchedSubstring {
 
   factory MatchedSubstring.fromJson(Map json) =>
       json != null ? MatchedSubstring(json['offset'], json['length']) : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'offset': offset,
+      'length': length
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class StructuredFormatting {
@@ -871,4 +1052,14 @@ class StructuredFormatting {
               ?.cast<MatchedSubstring>(),
           json['secondary_text'])
       : null;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'main_text': mainText,
+      'main_text_matched_substrings': mainTextMatchedSubstrings.map((item) => item.toJson()),
+      'secondary_text': secondaryText
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }

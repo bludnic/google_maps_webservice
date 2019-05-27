@@ -15,6 +15,11 @@ class Location {
 
   @override
   String toString() => '$lat,$lng';
+
+  Map<String, dynamic> toJson() => {
+    'lat': lat,
+    'lng': lng
+  };
 }
 
 class Geometry {
@@ -42,6 +47,17 @@ class Geometry {
           Bounds.fromJson(json['bounds']),
         )
       : null;
+  
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'location': location.toJson(),
+      'location_type': locationType,
+      'viewport': viewport?.toJson(),
+      'bounds': bounds?.toJson()
+    };
+
+    return Map.from(json)..removeWhere((k, v) => v == null);
+  }
 }
 
 class Bounds {
@@ -58,6 +74,11 @@ class Bounds {
   @override
   String toString() =>
       '${northeast.lat},${northeast.lng}|${southwest.lat},${southwest.lng}';
+
+  Map<String, dynamic> toJson() => {
+    'northeast': northeast.toJson(),
+    'southwest': southwest.toJson()
+  };
 }
 
 abstract class GoogleResponseStatus {
@@ -120,6 +141,12 @@ class AddressComponent {
       ? AddressComponent((json['types'] as List)?.cast<String>(),
           json['long_name'], json['short_name'])
       : null;
+
+  Map<String, dynamic> toJson() => {
+    'types': types,
+    'long_name': longName,
+    'short_name': shortName
+  };
 }
 
 class Component {
